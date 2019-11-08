@@ -34,12 +34,14 @@ type MPRecord = {
 };
 
 const Wrapper = styled.div`
+  background-color: white;
   bottom: 10px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
   max-width: 500px;
   position: fixed;
   right: 10px;
   width: 100%;
+  z-index: 9999;
 `;
 
 class App extends React.Component<{}, { mp: null | MPRecord }> {
@@ -52,36 +54,44 @@ class App extends React.Component<{}, { mp: null | MPRecord }> {
   render() {
     const { mp } = this.state;
     return (
-      mp && (
-        <Wrapper>
-          <button
-            style={{
-              position: "absolute",
-              bottom: "100%",
-              borderRadius: "100%",
-              marginBottom: 10,
-              right: 0,
-              height: 40,
-              width: 40
-            }}
-            onClick={() => this.setState({ mp: null })}
-          >
-            ╳
-          </button>
-          <MP
-            firstName={mp.given_name}
-            lastName={mp.family_name}
-            currentPositions={mp.office.map(o => o.position)}
-            thumbnail={{
-              url: `https://www.theyworkforyou.com${mp.image}`,
-              width: mp.image_width,
-              height: mp.image_height
-            }}
-            constituency={mp.constituency}
-            party={mp.party}
-          />
-        </Wrapper>
-      )
+      <Wrapper
+        style={{
+          opacity: mp ? 1 : 0,
+          transform: `translateY(${mp ? `-30px` : "0"})`,
+          transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+        }}
+      >
+        {mp && (
+          <>
+            <button
+              style={{
+                position: "absolute",
+                bottom: "100%",
+                borderRadius: "100%",
+                marginBottom: 10,
+                right: 0,
+                height: 40,
+                width: 40
+              }}
+              onClick={() => this.setState({ mp: null })}
+            >
+              ╳
+            </button>
+            <MP
+              firstName={mp.given_name}
+              lastName={mp.family_name}
+              currentPositions={mp.office.map(o => o.position)}
+              thumbnail={{
+                url: `https://www.theyworkforyou.com${mp.image}`,
+                width: mp.image_width,
+                height: mp.image_height
+              }}
+              constituency={mp.constituency}
+              party={mp.party}
+            />
+          </>
+        )}
+      </Wrapper>
     );
   }
 }
