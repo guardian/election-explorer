@@ -5649,7 +5649,12 @@ const patchDOMForMPs = mpsByName => {
   const seenLastNames = Object.keys(seenMpsByLastName);
   createTextAnchors(body, seenLastNames, (node, lastName) => {
     const mp = seenMpsByLastName[lastName];
-    node.classList.add('mp-name');
+    const p = node.parentNode;
+
+    if (!p.classList.contains('mp-name')) {
+      node.classList.add('mp-name');
+    }
+
     configureNode(node, mp.id);
   });
 };
