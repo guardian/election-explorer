@@ -5600,36 +5600,32 @@ const configureNode = (node, mpId) => {
   });
 };
 
-const patchDOMForMPs = mps => {
+const patchDOMForMPs = mpsByName => {
   const body = document.querySelector(".js-article__body");
-  const names = Object.keys(mps);
+  const names = Object.keys(mpsByName);
 
+  const seenMpsByLastName = {};
 
-  const seenMps = {};
+  createTextAnchors(body, names, (node, name) => {
+    node.classList.add('mp-name')
 
-
-      createTextAnchors(body, names, (node, name) => {
-        const mp = mps[name];
-        node.classList.add('mp-name')
-    seenMps[mp.lastName] = mp;
+    const mp = mpsByName[name];
+    seenMpsByLastName[mp.lastName] = mp;
 
     configureNode(node, mp.id);
   });
 
-  const seenLastNames = Object.keys(seenMps);
+  const seenLastNames = Object.keys(seenMpsByLastName);
   createTextAnchors(body, seenLastNames, (node, lastName) => {
-    const mp = seenMps[lastName];
+    const mp = seenMpsByLastName[lastName];
 
     configureNode(node, mp.id);
   });
 };
 
-
-
-
 createStylesheet();
 
-const mpsIndexedByName = mps.reduce(
+const mpsByName = mps.reduce(
   (acc, mp) => {
     acc[`${mp.firstName} ${mp.lastName}`] = mp;
     return acc;
@@ -5640,7 +5636,7 @@ const mpsIndexedByName = mps.reduce(
 
 const start = new Date();
 console.log("Start patching MPs", start);
-patchDOMForMPs(mpsIndexedByName);
+patchDOMForMPs(mpsByName);
 console.log("Done patching MPs took: ", new Date() - start);
 
 
