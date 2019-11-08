@@ -44,11 +44,15 @@ const Wrapper = styled.div`
   z-index: 9999;
 `;
 
-class App extends React.Component<{}, { mp: null | MPRecord }> {
+class App extends React.Component<
+  {},
+  { mp: null | MPRecord; votes?: string[] }
+> {
   constructor(props: any) {
     super(props);
     this.state = { mp: null };
     (window as any).setMP = (mp: MPRecord) => this.setState({ mp });
+    (window as any).setVotes = (votes: string[]) => this.setState({ votes });
   }
 
   render() {
@@ -73,7 +77,7 @@ class App extends React.Component<{}, { mp: null | MPRecord }> {
                 height: 40,
                 width: 40
               }}
-              onClick={() => this.setState({ mp: null })}
+              onClick={() => this.setState({ mp: null, votes: undefined })}
             >
               ╳
             </button>
@@ -88,6 +92,7 @@ class App extends React.Component<{}, { mp: null | MPRecord }> {
               }}
               constituency={mp.constituency}
               party={mp.party}
+              votes={this.state.votes}
             />
           </>
         )}

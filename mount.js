@@ -5545,22 +5545,24 @@ const linkStyles = `
     background-size: contain;
     background-repeat: no-repeat;
 } 
-`
+`;
 
 const createStylesheet = () => {
   const css = linkStyles;
-  const head = document.head || document.getElementsByTagName('head')[0];
-  const style = document.createElement('style');
+  const head = document.head || document.getElementsByTagName("head")[0];
+  const style = document.createElement("style");
 
   head.appendChild(style);
 
-  style.type = 'text/css';
-  style.appendChild(document.createTextNode(css))
-}
+  style.type = "text/css";
+  style.appendChild(document.createTextNode(css));
+};
 
 const createTextAnchors = (root, names, updater) => {
-  const namesRegExp = new RegExp(`(.*)([^a-zA-Z])?(${names.join("|")})([^a-zA-Z])?`, "i");
-
+  const namesRegExp = new RegExp(
+    `(.*)([^a-zA-Z])?(${names.join("|")})([^a-zA-Z])?`,
+    "i"
+  );
 
   const nodes = document.createTreeWalker(
     root,
@@ -5575,7 +5577,7 @@ const createTextAnchors = (root, names, updater) => {
     let text = node.nodeValue;
 
     let m;
-    while (m = text.match(namesRegExp)) {
+    while ((m = text.match(namesRegExp))) {
       text = text.slice(m[0].length);
       p.insertBefore(
         document.createTextNode(`${m[1] || ""}${m[2] || ""}`),
@@ -5592,11 +5594,16 @@ const createTextAnchors = (root, names, updater) => {
 
 const configureNode = (node, mpId) => {
   node.addEventListener("click", () => {
-      fetch(
-        `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
-      )
-        .then(res => res.json())
-        .then(arr => setMP(arr[0]));
+    fetch(
+      `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
+    )
+      .then(res => res.json())
+      .then(arr => window.setMP(arr[0]));
+    fetch(
+      `https://wrapapi.com/use/gtrufitt/election/votes/0.0.4?wrapAPIKey=ZKmch5JvjvH7hhf2Qn7N3qKrwpbuPtKN&mpId=${mpId}`
+    )
+      .then(res => res.json())
+      .then(json => window.setVotes(json.data.output));
   });
 };
 
@@ -5607,7 +5614,7 @@ const patchDOMForMPs = mpsByName => {
   const seenMpsByLastName = {};
 
   createTextAnchors(body, names, (node, name) => {
-    node.classList.add('mp-name')
+    node.classList.add("mp-name");
 
     const mp = mpsByName[name];
     seenMpsByLastName[mp.lastName] = mp;
@@ -5625,20 +5632,15 @@ const patchDOMForMPs = mpsByName => {
 
 createStylesheet();
 
-const mpsByName = mps.reduce(
-  (acc, mp) => {
-    acc[`${mp.firstName} ${mp.lastName}`] = mp;
-    return acc;
-  },
-  {}
-);
-
+const mpsByName = mps.reduce((acc, mp) => {
+  acc[`${mp.firstName} ${mp.lastName}`] = mp;
+  return acc;
+}, {});
 
 const start = new Date();
 console.log("Start patching MPs", start);
 patchDOMForMPs(mpsByName);
 console.log("Done patching MPs took: ", new Date() - start);
-
 
 console.log("MOUNTING");
 const el = document.createElement("div");

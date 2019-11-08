@@ -4,7 +4,7 @@ const button = document.createElement("button");
 
 button.innerHTML = "View jeremy";
 
-const viewJez = () =>
+const viewJez = () => {
   window.setMP({
     member_id: "41651",
     house: "1",
@@ -45,6 +45,17 @@ const viewJez = () =>
       }
     ]
   });
+  setTimeout(() => {
+    window.setVotes([
+      "<li>Almost always voted for paying higher ben…e, between 2015&#x2013;2016</a></li>",
+      "<li>Voted against replacing <b>Trident</b> wi…gainst, 3 absences, in 2016</a></li>",
+      "<li>Generally voted for a referendum on the U…s, between 2015&#x2013;2016</a></li>",
+      "<li>Voted against an <b>equal number of elect…or, 1 vote against, in 2016</a></li>",
+      "<li>Voted for removing <b>hereditary peers</b…r, 0 votes against, in 2016</a></li>",
+      "<li>Consistently voted against <b>fewer MPs</…r, 2 votes against, in 2016</a></li>"
+    ]);
+  }, 1000);
+};
 
 button.addEventListener("click", viewJez);
 
