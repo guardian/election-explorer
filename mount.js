@@ -5556,19 +5556,35 @@ const createTextAnchors = (root, names, updater) => {
   }
 };
 
+const configureNode = (node, mpId) => {
+  node.style.backgroundColor = "red";
+  node.addEventListener("click", () => {
+      fetch(
+        `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
+      )
+        .then(res => res.json())
+        .then(arr => setMP(arr[0]));
+  });
+};
+
 const patchDOMForMPs = mps => {
   const body = document.querySelector(".js-article__body");
-  const names = Object.values(mps).map(mp => `${mp.firstName} ${mp.lastName}`);
+  const names = Object.keys(mps);
+
+  const seenMps = {};
 
   createTextAnchors(body, names, (node, name) => {
-    node.style.backgroundColor = "red";
-    node.addEventListener("click", () => {
-       fetch(
-         `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mps[name].id}`
-       )
-         .then(res => res.json())
-         .then(arr => setMP(arr[0]));
-    });
+    const mp = mps[name];
+    seenMps[mp.lastName] = mp;
+
+    configureNode(node, mp.id);
+  });
+
+  const seenLastNames = Object.keys(seenMps);
+  createTextAnchors(body, seenLastNames, (node, lastName) => {
+    const mp = seenMps[lastName];
+
+    configureNode(node, mp.id);
   });
 };
 
