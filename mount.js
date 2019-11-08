@@ -5563,15 +5563,11 @@ const patchDOMForMPs = mps => {
   createTextAnchors(body, names, (node, name) => {
     node.style.backgroundColor = "red";
     node.addEventListener("click", () => {
-      // fetch(
-      //   `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mps[name].id}`
-      // )
-      //   .then(res => res.json())
-      //   .then(arr => setMP(arr[0]));
-
-      new Promise(res => {
-        setTimeout(res, 200);
-      }).then(() => window.setMP(jc));
+       fetch(
+         `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mps[name].id}`
+       )
+         .then(res => res.json())
+         .then(arr => setMP(arr[0]));
     });
   });
 };
