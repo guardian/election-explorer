@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { MP } from "./src/MP";
+import styled from "styled-components";
 
 type MPRecord = {
   member_id: string;
@@ -32,9 +33,20 @@ type MPRecord = {
   }[];
 };
 
+const Wrapper = styled.div`
+  border-radius: 10px;
+  bottom: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  padding: 1rem;
+  position: fixed;
+  right: 10px;
+  width: 100%;
+`;
+
 class App extends React.Component<{}, { mp: null | MPRecord }> {
-  constructor() {
-    super({});
+  constructor(props: any) {
+    super(props);
     this.state = { mp: null };
     (window as any).setMP = (mp: MPRecord) => this.setState({ mp });
   }
@@ -43,10 +55,21 @@ class App extends React.Component<{}, { mp: null | MPRecord }> {
     const { mp } = this.state;
     return (
       mp && (
-        <div style={{ position: "fixed", bottom: 10, right: 10 }}>
+        <Wrapper>
           <button onClick={() => this.setState({ mp: null })}>Close</button>
-          <MP firstName={mp.given_name} />
-        </div>
+          <MP
+            firstName={mp.given_name}
+            lastName={mp.family_name}
+            currentPositions={mp.office.map(o => o.position)}
+            thumbnail={{
+              url: `https://www.theyworkforyou.com${mp.image}`,
+              width: mp.image_width,
+              height: mp.image_height
+            }}
+            constituency={mp.constituency}
+            party={mp.party}
+          />
+        </Wrapper>
       )
     );
   }
