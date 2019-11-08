@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type MPProps = {
@@ -8,11 +8,12 @@ type MPProps = {
   party: string;
   constituency: string;
   currentPositions: string[];
+  votes?: string[];
 };
 
 const FlexHeader = styled.div`
   background-color: #f4f4f4;
-  border-bottom: 1px solid ${props => props.color};
+  border-bottom: 2px solid ${props => props.color};
   display: flex;
 `;
 
@@ -47,8 +48,10 @@ const MP = ({
   thumbnail,
   constituency,
   party,
-  currentPositions
+  currentPositions,
+  votes
 }: MPProps) => {
+  const [showVotes, setShowVotes] = useState(false);
   return (
     <div>
       <FlexHeader color={getPartyColor(party)}>
@@ -76,6 +79,24 @@ const MP = ({
             <li>{pos}</li>
           ))}
         </ul>
+        <h4>
+          Voting history{" "}
+          {votes && (
+            <small
+              onClick={() => setShowVotes(prev => !prev)}
+              style={{ color: getPartyColor(party), cursor: "pointer" }}
+            >
+              show
+            </small>
+          )}
+        </h4>
+        {votes && showVotes && (
+          <ul style={{ fontSize: 14 }}>
+            {votes.map(vote => (
+              <div dangerouslySetInnerHTML={{ __html: vote }}></div>
+            ))}
+          </ul>
+        )}
       </Info>
     </div>
   );
