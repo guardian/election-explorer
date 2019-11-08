@@ -1,4 +1,4 @@
-import "./index.js";
+import "./index.tsx";
 
 const button = document.createElement("button");
 

@@ -5525,6 +5525,39 @@ const jc = {
   ]
 };
 
+const personSvg = `<svg style='enable-background:new 0 0 48 48;' version='1.1' viewBox='0 0 48 48' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><style type='text/css'>.st0{display:none;}.st1{fill:none;stroke:#303030;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}.st2{fill:#303030;}</style><g class='st0' id='Padding__x26__Artboard'/><g id='Icons'><g><circle class='st1' cx='24' cy='19.15045' r='7.26353'/><path class='st1' d='M19.12193,17.23642c0.48483-2.4277,2.8459-4.00272,5.2736-3.51789'/><path class='st1' d='M11.54175,36.11307c0-3.88968,3.18246-7.07214,7.07214-7.07214h10.77223    c3.88968,0,7.07214,3.18246,7.07214,7.07214'/><path class='st1' d='M18.98164,18.68699c0,0-0.10733,0.99282,0,1.44898'/><circle class='st1' cx='24' cy='19.15045' r='7.26353'/><path class='st1' d='M19.12193,17.23642c0.48483-2.4277,2.8459-4.00272,5.2736-3.51789'/><path class='st1' d='M11.54175,36.11307c0-3.88968,3.18246-7.07214,7.07214-7.07214h10.77223    c3.88968,0,7.07214,3.18246,7.07214,7.07214'/><path class='st1' d='M18.98164,18.68699c0,0-0.10733,0.99282,0,1.44898'/></g></g></svg>`;
+
+
+const linkStyles = `
+.mp-name { 
+  background: #f6f6f6;
+  padding-right: 10px;
+  position: relative;
+}
+
+.mp-name::after {
+  content: url("data:image/svg+xml; utf8, ${personSvg}");
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 10px;
+  width: 10px;
+}
+`
+
+const createStylesheet = () => {
+  const css = linkStyles;
+  const head = document.head || document.getElementsByTagName('head')[0];
+  const style = document.createElement('style');
+
+  head.appendChild(style);
+
+  style.type = 'text/css';
+  style.appendChild(document.createTextNode(css))
+}
+
+
 const createTextAnchors = (root, search, updater) => {
   const nodes = document.createTreeWalker(
     root,
@@ -5560,7 +5593,7 @@ const patchDOMForMP = mp => {
   const body = document.querySelector(".js-article__body");
   const name = `${mp.firstName} ${mp.lastName}`.toLowerCase();
   createTextAnchors(body, name, node => {
-    node.style.backgroundColor = "red";
+    node.classList.add('mp-name')
     node.addEventListener("click", () => {
       // fetch(
       //   `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mp.id}`
@@ -5574,6 +5607,9 @@ const patchDOMForMP = mp => {
     });
   });
 };
+
+
+createStylesheet();
 
 for (let i = 0; i < mps.length; i++) {
   const mp = mps[i];
