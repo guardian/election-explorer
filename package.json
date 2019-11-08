@@ -8,11 +8,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel index.html --no-hmr"
+    "dev": "parcel index.html --no-hmr",
+    "build": "parcel build --no-content-hash index.js --out-dir dist/chrome"
   },
   "repository": "git@github.com:guardian/election-explorer.git",
   "author": "RichieAHB <richard.beddington@guardian.co.uk>",
   "dependencies": {
+    "index.js": "^0.0.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0"
   }

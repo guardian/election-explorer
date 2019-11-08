@@ -2783,6 +2783,11 @@ import-fresh@^2.0.0:
     caller-path "^2.0.0"
     resolve-from "^3.0.0"
 
+index.js@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/index.js/-/index.js-0.0.3.tgz#2733b1f486dc890ed026989024f582d835c523ac"
+  integrity sha1-JzOx9IbciQ7QJpiQJPWC2DXFI6w=
+
 indexes-of@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/indexes-of/-/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"

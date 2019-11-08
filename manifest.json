@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.theguardian.com/*/*"],
-      "js": ["index.js"]
+      "js": ["dist/chrome/index.js", "mount.js"]
     }
   ]
 }
