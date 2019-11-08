@@ -5525,7 +5525,7 @@ const jc = {
   ]
 };
 
-const createTextAnchors = (root, search, updater) => {
+const createTextAnchors = (root, namesRegExp, updater) => {
   const nodes = document.createTreeWalker(
     root,
     NodeFilter.SHOW_TEXT,
@@ -5533,15 +5533,13 @@ const createTextAnchors = (root, search, updater) => {
     null
   );
   let node;
+
   while ((node = nodes.nextNode())) {
     const p = node.parentNode;
     let text = node.nodeValue;
+
     let m;
-    while (
-      (m = text.match(
-        new RegExp(`(.*)([^a-zA-Z])?(${search})([^a-zA-Z])?`, "i")
-      ))
-    ) {
+    while (m = text.match(namesRegExp)) {
       text = text.slice(m[0].length);
       p.insertBefore(
         document.createTextNode(`${m[1] || ""}${m[2] || ""}`),
@@ -5556,10 +5554,12 @@ const createTextAnchors = (root, search, updater) => {
   }
 };
 
-const patchDOMForMP = mp => {
+const patchDOMForMPs = mps => {
   const body = document.querySelector(".js-article__body");
-  const name = `${mp.firstName} ${mp.lastName}`.toLowerCase();
-  createTextAnchors(body, name, node => {
+  const names = mps.map(mp => `${mp.firstName} ${mp.lastName}`);
+  const namesRegExp = new RegExp(`(.*)([^a-zA-Z])?(${names.join("|")})([^a-zA-Z])?`, "i");
+
+  createTextAnchors(body, namesRegExp, node => {
     node.style.backgroundColor = "red";
     node.addEventListener("click", () => {
       // fetch(
@@ -5575,10 +5575,10 @@ const patchDOMForMP = mp => {
   });
 };
 
-for (let i = 0; i < mps.length; i++) {
-  const mp = mps[i];
-  patchDOMForMP(mp);
-}
+const start = new Date();
+console.log("Start patching MPs", start);
+patchDOMForMPs(mps);
+console.log("Done patching MPs took: ", new Date() - start);
 
 console.log("MOUNTING");
 const el = document.createElement("div");
