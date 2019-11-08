@@ -1,6 +1,9 @@
 {
   "devDependencies": {
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
     "parcel-bundler": "^1.12.4",
+    "typescript": "^3.7.2",
     "webpack": "^3.8.1"
   },
   "name": "election-explorer",
@@ -9,7 +12,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "parcel index.html --no-hmr",
-    "build": "parcel build --no-content-hash index.js --out-dir dist/chrome"
+    "build": "parcel build --no-content-hash index.tsx --out-dir dist/chrome"
   },
   "repository": "git@github.com:guardian/election-explorer.git",
   "author": "RichieAHB <richard.beddington@guardian.co.uk>",
