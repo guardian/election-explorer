@@ -4,7 +4,7 @@ const button = document.createElement("button");
 
 button.innerHTML = "View jeremy";
 
-button.addEventListener("click", () => {
+const viewJez = () =>
   window.setMP({
     member_id: "41651",
     house: "1",
@@ -45,6 +45,7 @@ button.addEventListener("click", () => {
       }
     ]
   });
-});
+
+button.addEventListener("click", viewJez);
 
 document.body.appendChild(button);

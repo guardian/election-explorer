@@ -2,6 +2,7 @@
   "devDependencies": {
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.4",
+    "@types/styled-components": "^4.1.22",
     "parcel-bundler": "^1.12.4",
     "typescript": "^3.7.2",
     "webpack": "^3.8.1"
@@ -18,7 +19,8 @@
   "author": "RichieAHB <richard.beddington@guardian.co.uk>",
   "dependencies": {
     "index.js": "^0.0.3",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0"
+    "react": ">= 16.3.0",
+    "react-dom": ">= 16.3.0",
+    "styled-components": "^4.4.1"
   }
 }
