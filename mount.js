@@ -5528,6 +5528,7 @@ const jc = {
 const linkStyles = `
 .mp-name { 
   background: #f6f6f6;
+  cursor: pointer;
   padding-right: 15px;
   position: relative;
 }
@@ -5543,9 +5544,7 @@ const linkStyles = `
     width: 15px;
     background-size: contain;
     background-repeat: no-repeat;
-}
-
-.st1{fill:none;stroke:#303030;stroke-width:.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
+} 
 `
 
 const createStylesheet = () => {
@@ -5559,7 +5558,9 @@ const createStylesheet = () => {
   style.appendChild(document.createTextNode(css))
 }
 
-const createTextAnchors = (root, namesRegExp, updater) => {
+const createTextAnchors = (root, names, updater) => {
+  const namesRegExp = new RegExp(`(.*)([^a-zA-Z])?(${names.join("|")})([^a-zA-Z])?`, "i");
+
 
   const nodes = document.createTreeWalker(
     root,
@@ -5582,41 +5583,64 @@ const createTextAnchors = (root, namesRegExp, updater) => {
       );
       const word = p.insertBefore(document.createElement("span"), node);
       word.appendChild(document.createTextNode(m[3] || ""));
-      updater(word);
+      updater(word, m[3]);
       p.insertBefore(document.createTextNode(m[4] || ""), node);
     }
     node.nodeValue = text;
   }
 };
 
+const configureNode = (node, mpId) => {
+  node.addEventListener("click", () => {
+      fetch(
+        `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
+      )
+        .then(res => res.json())
+        .then(arr => setMP(arr[0]));
+  });
+};
+
 const patchDOMForMPs = mps => {
   const body = document.querySelector(".js-article__body");
-  const names = mps.map(mp => `${mp.firstName} ${mp.lastName}`);
-  const namesRegExp = new RegExp(`(.*)([^a-zA-Z])?(${names.join("|")})([^a-zA-Z])?`, "i");
+  const names = Object.keys(mps);
 
-  createTextAnchors(body, namesRegExp, node => {
-    node.classList.add('mp-name')
-    node.addEventListener("click", () => {
-      // fetch(
-      //   `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mp.id}`
-      // )
-      //   .then(res => res.json())
-      //   .then(arr => setMP(arr[0]));
 
-      new Promise(res => {
-        setTimeout(res, 200);
-      }).then(() => window.setMP(jc));
-    });
+  const seenMps = {};
+
+
+      createTextAnchors(body, names, (node, name) => {
+        const mp = mps[name];
+        node.classList.add('mp-name')
+    seenMps[mp.lastName] = mp;
+
+    configureNode(node, mp.id);
+  });
+
+  const seenLastNames = Object.keys(seenMps);
+  createTextAnchors(body, seenLastNames, (node, lastName) => {
+    const mp = seenMps[lastName];
+
+    configureNode(node, mp.id);
   });
 };
 
 
 
+
 createStylesheet();
+
+const mpsIndexedByName = mps.reduce(
+  (acc, mp) => {
+    acc[`${mp.firstName} ${mp.lastName}`] = mp;
+    return acc;
+  },
+  {}
+);
+
 
 const start = new Date();
 console.log("Start patching MPs", start);
-patchDOMForMPs(mps);
+patchDOMForMPs(mpsIndexedByName);
 console.log("Done patching MPs took: ", new Date() - start);
 
 
