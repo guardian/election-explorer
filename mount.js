@@ -5528,6 +5528,7 @@ const jc = {
 const linkStyles = `
 .mp-name { 
   background: #f6f6f6;
+  border-bottom: 1px solid #c70000;
   cursor: pointer;
   padding-right: 15px;
   position: relative;
@@ -5601,14 +5602,14 @@ const fetchMpData = mpId => {
   }
 
   return fetch(
-      `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
-    )
-      .then(res => res.json())
-      .then(json => {
-        mpDataCache[mpId] = json;
-        return json;
-      });
-}
+    `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
+  )
+    .then(res => res.json())
+    .then(json => {
+      mpDataCache[mpId] = json;
+      return json;
+    });
+};
 
 const fetchVotingHistory = mpId => {
   if (mpVotingHistoryCache[mpId]) {
@@ -5616,14 +5617,14 @@ const fetchVotingHistory = mpId => {
   }
 
   return fetch(
-      `https://wrapapi.com/use/gtrufitt/election/votes/0.0.4?wrapAPIKey=ZKmch5JvjvH7hhf2Qn7N3qKrwpbuPtKN&mpId=${mpId}`
-    )
-      .then(res => res.json())
-      .then(json => {
-        mpVotingHistoryCache[mpId] = json;
-        return json;
-      });
-}
+    `https://wrapapi.com/use/gtrufitt/election/votes/0.0.4?wrapAPIKey=ZKmch5JvjvH7hhf2Qn7N3qKrwpbuPtKN&mpId=${mpId}`
+  )
+    .then(res => res.json())
+    .then(json => {
+      mpVotingHistoryCache[mpId] = json;
+      return json;
+    });
+};
 
 const configureNode = (node, mpId) => {
   node.addEventListener("click", () => {
@@ -5640,7 +5641,7 @@ const patchDOMForMPs = mpsByName => {
 
   createTextAnchors(body, names, (node, name) => {
     const mp = mpsByName[name];
-    node.classList.add('mp-name');
+    node.classList.add("mp-name");
     seenMpsByLastName[mp.lastName] = mp;
 
     configureNode(node, mp.id);
@@ -5651,8 +5652,8 @@ const patchDOMForMPs = mpsByName => {
     const mp = seenMpsByLastName[lastName];
     const p = node.parentNode;
 
-    if (!p.classList.contains('mp-name')) {
-      node.classList.add('mp-name');
+    if (!p.classList.contains("mp-name")) {
+      node.classList.add("mp-name");
     }
 
     configureNode(node, mp.id);
