@@ -13,7 +13,7 @@ type MPProps = {
 
 const FlexHeader = styled.div`
   background-color: #f4f4f4;
-  border-bottom: 1px solid ${props => props.color};
+  border-bottom: 2px solid ${props => props.color};
   display: flex;
 `;
 
