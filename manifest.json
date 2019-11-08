@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Election Explorer",
+  "version": "1.0",
+
+  "description": "Find in page info about UK MPs",
+
+  "icons": {
+    "48": "parliament.png"
+  },
+
+  "permissions": ["tabs"],
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.theguardian.com/*/*"],
+      "js": ["index.js"]
+    }
+  ]
+}
