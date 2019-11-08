@@ -34,11 +34,9 @@ type MPRecord = {
 };
 
 const Wrapper = styled.div`
-  border-radius: 10px;
   bottom: 10px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
   max-width: 500px;
-  padding: 1rem;
   position: fixed;
   right: 10px;
   width: 100%;
@@ -56,7 +54,20 @@ class App extends React.Component<{}, { mp: null | MPRecord }> {
     return (
       mp && (
         <Wrapper>
-          <button onClick={() => this.setState({ mp: null })}>Close</button>
+          <button
+            style={{
+              position: "absolute",
+              bottom: "100%",
+              borderRadius: "100%",
+              marginBottom: 10,
+              right: 0,
+              height: 40,
+              width: 40
+            }}
+            onClick={() => this.setState({ mp: null })}
+          >
+            ╳
+          </button>
           <MP
             firstName={mp.given_name}
             lastName={mp.family_name}
