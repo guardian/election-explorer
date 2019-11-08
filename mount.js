@@ -5592,18 +5592,43 @@ const createTextAnchors = (root, names, updater) => {
   }
 };
 
-const configureNode = (node, mpId) => {
-  node.addEventListener("click", () => {
-    fetch(
+const mpDataCache = {};
+const mpVotingHistoryCache = {};
+
+const fetchMpData = mpId => {
+  if (mpDataCache[mpId]) {
+    return Promise.resolve(mpDataCache[mpId]);
+  }
+
+  return fetch(
       `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mpId}`
     )
       .then(res => res.json())
-      .then(arr => window.setMP(arr[0]));
-    fetch(
+      .then(json => {
+        mpDataCache[mpId] = json;
+        return json;
+      });
+}
+
+const fetchVotingHistory = mpId => {
+  if (mpVotingHistoryCache[mpId]) {
+    return Promise.resolve(mpVotingHistoryCache[mpId]);
+  }
+
+  return fetch(
       `https://wrapapi.com/use/gtrufitt/election/votes/0.0.4?wrapAPIKey=ZKmch5JvjvH7hhf2Qn7N3qKrwpbuPtKN&mpId=${mpId}`
     )
       .then(res => res.json())
-      .then(json => window.setVotes(json.data.output));
+      .then(json => {
+        mpVotingHistoryCache[mpId] = json;
+        return json;
+      });
+}
+
+const configureNode = (node, mpId) => {
+  node.addEventListener("click", () => {
+    fetchMpData(mpId).then(arr => window.setMP(arr[0]));
+    fetchVotingHistory(mpId).then(json => window.setVotes(json.data.output));
   });
 };
 
