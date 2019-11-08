@@ -5723,7 +5723,7 @@ const jcResults = [
   }
 ];
 
-let setState = () => {};
+let setMP = () => {};
 
 const patchDOMForMP = mp => {
   const body = document.querySelector(".js-article__body");
@@ -5735,11 +5735,11 @@ const patchDOMForMP = mp => {
       //   `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mp.id}`
       // )
       //   .then(res => res.json())
-      //   .then(json => console.log(JSON.stringify(json)));
+      //   .then(arr => setMP(arr[0]));
 
       new Promise(res => {
         setTimeout(() => res(jcResults), 200);
-      }).then(arr => setState(arr[0]));
+      }).then(arr => setMP(arr[0]));
     });
   });
 };
@@ -5752,13 +5752,20 @@ for (let i = 0; i < mps.length; i++) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = null;
-    setState = this.setState.bind(this);
+    this.state = { mp: null };
+    setMP = mp => this.setState({ mp });
   }
 
   render() {
-    const mp = this.state;
-    return mp && <div>{mp.given_name}</div>;
+    const { mp } = this.state;
+    return (
+      mp && (
+        <div style={{ position: "fixed", bottom: 10, right: 10 }}>
+          <button onClick={() => this.setState({ mp: null })}>Close</button>
+          {mp.given_name}
+        </div>
+      )
+    );
   }
 }
 

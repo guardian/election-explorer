@@ -31795,9 +31795,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -36569,7 +36569,7 @@ var jcResults = [{
   image_width: 120
 }];
 
-var setState = function setState() {};
+var setMP = function setMP() {};
 
 var patchDOMForMP = function patchDOMForMP(mp) {
   var body = document.querySelector(".js-article__body");
@@ -36581,13 +36581,13 @@ var patchDOMForMP = function patchDOMForMP(mp) {
       //   `https://www.theyworkforyou.com/api/getMP?&output=js&key=Bdo5tBD5AVPwBUyLfhCXb3n9&id=${mp.id}`
       // )
       //   .then(res => res.json())
-      //   .then(json => console.log(JSON.stringify(json)));
+      //   .then(arr => setMP(arr[0]));
       new Promise(function (res) {
         setTimeout(function () {
           return res(jcResults);
         }, 200);
       }).then(function (arr) {
-        return setState(arr[0]);
+        return setMP(arr[0]);
       });
     });
   });
@@ -36609,16 +36609,38 @@ function (_React$Component) {
     _classCallCheck(this, App);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
-    _this.state = null;
-    setState = _this.setState.bind(_assertThisInitialized(_this));
+    _this.state = {
+      mp: null
+    };
+
+    setMP = function setMP(mp) {
+      return _this.setState({
+        mp: mp
+      });
+    };
+
     return _this;
   }
 
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var mp = this.state;
-      return mp && _react.default.createElement("div", null, mp.given_name);
+      var _this2 = this;
+
+      var mp = this.state.mp;
+      return mp && _react.default.createElement("div", {
+        style: {
+          position: "fixed",
+          bottom: 10,
+          right: 10
+        }
+      }, _react.default.createElement("button", {
+        onClick: function onClick() {
+          return _this2.setState({
+            mp: null
+          });
+        }
+      }, "Close"), mp.given_name);
     }
   }]);
 
