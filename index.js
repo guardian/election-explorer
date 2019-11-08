@@ -1,3 +1,6 @@
+import React from "react";
+import ReactDOM from "react-dom";
+
 const mps = [
   {
     id: 10001,
@@ -5720,6 +5723,8 @@ const jcResults = [
   }
 ];
 
+let setState = () => {};
+
 const patchDOMForMP = mp => {
   const body = document.querySelector(".js-article__body");
   const name = `${mp.firstName} ${mp.lastName}`.toLowerCase();
@@ -5734,7 +5739,7 @@ const patchDOMForMP = mp => {
 
       new Promise(res => {
         setTimeout(() => res(jcResults), 200);
-      }).then(console.log);
+      }).then(arr => setState(arr[0]));
     });
   });
 };
@@ -5743,5 +5748,24 @@ for (let i = 0; i < mps.length; i++) {
   const mp = mps[i];
   patchDOMForMP(mp);
 }
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = null;
+    setState = this.setState.bind(this);
+  }
+
+  render() {
+    const mp = this.state;
+    return mp && <div>{mp.given_name}</div>;
+  }
+}
+
+window.mount = node => {
+  ReactDOM.render(<App />, node);
+};
+
+console.log("inside", window.mount);
 
 console.log("finished");
