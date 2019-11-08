@@ -33,6 +33,23 @@ const Info = styled.div`
   padding: 1rem;
 `;
 
+const RegisterToVote = styled.a`
+  border-radius: 1.5em;
+  background-color: transparent;
+  color: white;
+  display: inline-block;
+  line-height: 1;
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  vertical-align: middle;
+
+  :hover,
+  :focus {
+    text-decoration: none;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+  }
+`;
+
 const getPartyColor = (party: string) => {
   return (
     ({
@@ -97,6 +114,16 @@ const MP = ({
             ))}
           </ul>
         )}
+        <div style={{ textAlign: "right" }}>
+          <RegisterToVote
+            href="https://www.gov.uk/register-to-vote"
+            style={{ backgroundColor: getPartyColor(party) }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Register to vote <span style={{ fontSize: 20 }}>›</span>
+          </RegisterToVote>
+        </div>
       </Info>
     </div>
   );
